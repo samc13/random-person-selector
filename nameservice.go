@@ -68,8 +68,12 @@ func parseToPerson(record []string) Person {
 	}
 	var voidedOn *time.Time
 	if record[3] != "NULL" {
-		v, _ := time.Parse("2006-01-02", record[3])
-		voidedOn = &v
+		v, err := time.Parse("2006-01-02", record[3])
+		if err != nil {
+			log.Printf("warning: failed to parse VoidedOn date '%s': %s. Treating as NULL.", record[3], err)
+		} else {
+			voidedOn = &v
+		}
 	}
 
 	return Person{
