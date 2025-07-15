@@ -29,9 +29,9 @@ func main() {
 
 	log.Printf("Ordered array looks like %v", peopleToUse)
 
-	// Take the top 10, or all if less than 10
-	if len(peopleToUse) > 10 {
-		peopleToUse = peopleToUse[:10]
+	// Take the top maxSampleSize, or all if less than maxSampleSize
+	if len(peopleToUse) > maxSampleSize {
+		peopleToUse = peopleToUse[:maxSampleSize]
 	}
 
 	log.Printf("Using %v people for selection", peopleToUse)
