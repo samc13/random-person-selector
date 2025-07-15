@@ -23,7 +23,7 @@ func main() {
 	}
 	log.Printf("Full list of people looks like %v", peopleToUse)
 	
-	// TODO: Filter down to those that have been selected the least (need to incorporate previousslections.csv)
+	// TODO: Filter down to those that have been selected the least (need to incorporate previousselections.csv)
 	
 	// Order by the 'oldest' addedOn date
 	sort.Slice(peopleToUse, func(i, j int) bool {
