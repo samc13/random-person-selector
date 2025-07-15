@@ -3,71 +3,22 @@ package main
 import (
 	"fmt"
 	"log"
-	"math/rand"
-	"sort"
-	"time"
+	"random-person-selector/core"
 )
-
-type PeopleProvider interface {
-	GetPeople() (People, error)
-}
 
 type FileBasedPeopleProvider struct{}
 
-func (f FileBasedPeopleProvider) GetPeople() (People, error) {
-	return GetPeople()
+func (f FileBasedPeopleProvider) GetPeople() (core.People, error) {
+	return core.GetPeople()
 }
 
 func main() {
 	// Initialize the people provider
 	provider := FileBasedPeopleProvider{}
-	selectedPerson, err := SelectRandomPerson(provider)
+	selectedPerson, err := core.SelectRandomPerson(provider)
 
 	if err != nil {
 		log.Fatalf("Error selecting random person: %v", err)
 	}
 	fmt.Printf("Selected person: %s \n", selectedPerson.Name)
-}
-
-func SelectRandomPerson(provider PeopleProvider) (Person, error) {
-	people, err := provider.GetPeople()
-	if err != nil {
-		log.Fatalf("Error getting people: %v", err)
-	}
-	// Filter out those that are voided
-	var peopleToUse []Person
-	for _, person := range people.people {
-		if person.VoidedOn == nil {
-			peopleToUse = append(peopleToUse, person)
-		}
-	}
-	log.Printf("Full list of people looks like %v", peopleToUse)
-
-	// TODO: Filter down to those that have been selected the least (need to incorporate previousslections.csv)
-
-	// Order by the 'oldest' addedOn date
-	sort.Slice(peopleToUse, func(i, j int) bool {
-		return peopleToUse[i].AddedOn.Before(peopleToUse[j].AddedOn)
-	})
-
-	log.Printf("Ordered array looks like %v", peopleToUse)
-
-	// Take the top maxSampleSize, or all if less than maxSampleSize
-	maxSampleSize := 10
-	if len(peopleToUse) > maxSampleSize {
-		peopleToUse = peopleToUse[:maxSampleSize]
-	}
-
-	log.Printf("Using %v people for selection", peopleToUse)
-
-	// Ensure there are people to select from
-	if len(peopleToUse) == 0 {
-		log.Fatal("No people available for selection. Exiting program.")
-	}
-	// Randomly pick from the remaining sample
-	rand.Seed(time.Now().UnixNano()) // Add random seed
-	randomIndex := rand.Intn(len(peopleToUse))
-	selectedPerson := peopleToUse[randomIndex]
-
-	return selectedPerson, nil
 }

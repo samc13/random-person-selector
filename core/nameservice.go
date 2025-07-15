@@ -1,10 +1,10 @@
-package main
+package core
 
 import (
 	"encoding/csv"
+	"errors"
 	"os"
 	"strconv"
-	"errors"
 	"time"
 )
 
