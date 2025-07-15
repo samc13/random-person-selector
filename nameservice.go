@@ -16,7 +16,7 @@ type Person struct {
 }
 
 func (p Person) String() string {
-	if (p.VoidedOn != nil) {
+	if p.VoidedOn != nil {
 		return p.Name + " (Voided)"
 	}
 	return p.Name
