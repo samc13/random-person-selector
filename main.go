@@ -36,6 +36,10 @@ func main() {
 
 	log.Printf("Using %v people for selection", peopleToUse)
 
+	// Ensure there are people to select from
+	if len(peopleToUse) == 0 {
+		log.Fatal("No people available for selection. Exiting program.")
+	}
 	// Randomly pick from the remaining sample
     rand.Seed(time.Now().UnixNano()) // Add random seed
 	randomIndex := rand.Intn(len(peopleToUse))
