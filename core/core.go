@@ -24,7 +24,6 @@ func SelectRandomPerson(provider PeopleProvider) (Person, error) {
 			peopleToUse = append(peopleToUse, person)
 		}
 	}
-	log.Printf("Full list of people looks like %v", peopleToUse)
 
 	// TODO: Filter down to those that have been selected the least (need to incorporate previousslections.csv)
 
@@ -33,15 +32,11 @@ func SelectRandomPerson(provider PeopleProvider) (Person, error) {
 		return peopleToUse[i].AddedOn.Before(peopleToUse[j].AddedOn)
 	})
 
-	log.Printf("Ordered array looks like %v", peopleToUse)
-
 	// Take the top maxSampleSize, or all if less than maxSampleSize
 	maxSampleSize := 10
 	if len(peopleToUse) > maxSampleSize {
 		peopleToUse = peopleToUse[:maxSampleSize]
 	}
-
-	log.Printf("Using %v people for selection", peopleToUse)
 
 	// Ensure there are people to select from
 	if len(peopleToUse) == 0 {
