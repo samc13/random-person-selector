@@ -2,9 +2,9 @@ package main
 
 import (
 	"encoding/csv"
-	"log"
 	"os"
 	"strconv"
+	"errors"
 	"time"
 )
 
@@ -26,51 +26,60 @@ type People struct {
 	people []Person
 }
 
-func GetPeople() People {
+func GetPeople() (People, error) {
 	filePath := "names.csv"
 	return constructPeople(filePath)
 }
 
-func constructPeople(filePath string) People {
-	records := readCsvFile(filePath)
+func constructPeople(filePath string) (People, error) {
+	records, err := readCsvFile(filePath)
+	if err != nil {
+		return People{}, err
+	}
+	if len(records) < 2 {
+		return People{}, errors.New("CSV file is empty or does not contain enough data")
+	}
 	var persons []Person
 	for _, record := range records[1:] { // Skip header
-		person := parseToPerson(record)
+		person, err := parseToPerson(record)
+		if err != nil {
+			return People{}, err
+		}
 		persons = append(persons, person)
 	}
-	return People{people: persons}
+	return People{people: persons}, nil
 }
 
-func readCsvFile(filePath string) [][]string {
+func readCsvFile(filePath string) ([][]string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
-		log.Fatalf("failed to open file: %s", err)
+		return nil, err
 	}
 	defer file.Close()
 
 	reader := csv.NewReader(file)
 	records, err := reader.ReadAll()
 	if err != nil {
-		log.Fatalf("failed to read csv: %s", err)
+		return nil, err
 	}
 
-	return records
+	return records, nil
 }
 
-func parseToPerson(record []string) Person {
+func parseToPerson(record []string) (Person, error) {
 	id, err := strconv.Atoi(record[0])
 	if err != nil {
-		log.Fatalf("failed to parse ID: %s", err)
+		return Person{}, err
 	}
 	addedOn, err := time.Parse("2006-01-02", record[2])
 	if err != nil {
-		log.Fatalf("failed to parse AddedOn date: %s", err)
+		return Person{}, err
 	}
 	var voidedOn *time.Time
 	if record[3] != "NULL" {
 		v, err := time.Parse("2006-01-02", record[3])
 		if err != nil {
-			log.Printf("warning: failed to parse VoidedOn date '%s': %s. Treating as NULL.", record[3], err)
+			return Person{}, err
 		} else {
 			voidedOn = &v
 		}
@@ -81,5 +90,5 @@ func parseToPerson(record []string) Person {
 		Name:     record[1],
 		AddedOn:  addedOn,
 		VoidedOn: voidedOn,
-	}
+	}, nil
 }

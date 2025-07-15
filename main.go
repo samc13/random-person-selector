@@ -8,9 +8,12 @@ import (
     "time"
 )
 
-func main() {
-	people := GetPeople()
 
+func main() {
+	people, err := GetPeople()
+	if err != nil {
+		log.Fatalf("Error getting people: %v", err)
+	}
 	// Filter out those that are voided
 	var peopleToUse []Person
 	for _, person := range people.people {
@@ -19,17 +22,18 @@ func main() {
 		}
 	}
 	log.Printf("Full list of people looks like %v", peopleToUse)
-
+	
 	// TODO: Filter down to those that have been selected the least (need to incorporate previousslections.csv)
-
+	
 	// Order by the 'oldest' addedOn date
 	sort.Slice(peopleToUse, func(i, j int) bool {
 		return peopleToUse[i].AddedOn.Before(peopleToUse[j].AddedOn)
 	})
-
+	
 	log.Printf("Ordered array looks like %v", peopleToUse)
-
+	
 	// Take the top maxSampleSize, or all if less than maxSampleSize
+	maxSampleSize := 10
 	if len(peopleToUse) > maxSampleSize {
 		peopleToUse = peopleToUse[:maxSampleSize]
 	}
