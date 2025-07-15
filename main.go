@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
-    "math/rand"
-    "sort"
-    "time"
+	"math/rand"
+	"sort"
+	"time"
 )
 
 type PeopleProvider interface {
@@ -42,16 +42,16 @@ func SelectRandomPerson(provider PeopleProvider) (Person, error) {
 		}
 	}
 	log.Printf("Full list of people looks like %v", peopleToUse)
-	
+
 	// TODO: Filter down to those that have been selected the least (need to incorporate previousslections.csv)
-	
+
 	// Order by the 'oldest' addedOn date
 	sort.Slice(peopleToUse, func(i, j int) bool {
 		return peopleToUse[i].AddedOn.Before(peopleToUse[j].AddedOn)
 	})
-	
+
 	log.Printf("Ordered array looks like %v", peopleToUse)
-	
+
 	// Take the top maxSampleSize, or all if less than maxSampleSize
 	maxSampleSize := 10
 	if len(peopleToUse) > maxSampleSize {
@@ -65,7 +65,7 @@ func SelectRandomPerson(provider PeopleProvider) (Person, error) {
 		log.Fatal("No people available for selection. Exiting program.")
 	}
 	// Randomly pick from the remaining sample
-    rand.Seed(time.Now().UnixNano()) // Add random seed
+	rand.Seed(time.Now().UnixNano()) // Add random seed
 	randomIndex := rand.Intn(len(peopleToUse))
 	selectedPerson := peopleToUse[randomIndex]
 
