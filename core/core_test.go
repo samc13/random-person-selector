@@ -62,9 +62,6 @@ func TestSelectRandomPerson_Success(t *testing.T) {
 	if selectedPerson.VoidedOn != nil {
 		t.Fatalf("Expected selected person to not be voided, got %v", selectedPerson.VoidedOn)
 	}
-	if selectedPerson.VoidedOn != nil {
-		t.Fatalf("Expected selected person to not be voided, got %v", selectedPerson.VoidedOn)
-	}
 }
 
 func TestSelectRandomPerson_NoPeopleReturnedFromCsv(t *testing.T) {
