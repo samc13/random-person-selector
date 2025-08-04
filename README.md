@@ -38,3 +38,13 @@ gofmt -w main.go
 ```
 
 to format a file. The `-w` flag will write to the source file, otherwise it goes to STDOUT. 
+
+## Testing
+
+To run the tests, you just run: 
+
+```bash
+go test .
+```
+
+The naming convention is `*_test.go`. 

@@ -52,7 +52,7 @@ func TestSelectRandomPerson_Success(t *testing.T) {
 	}
 
 	// Act
-	selectedPerson, err := SelectRandomPerson(mockProvider)
+	selectedPerson, err := FetchRandomPerson(mockProvider)
 
 	// Assert
 	assertNoError(&err, t)
@@ -72,7 +72,7 @@ func TestSelectRandomPerson_NoPeopleReturnedFromCsv(t *testing.T) {
 	}
 
 	// Act
-	selectedPerson, err := SelectRandomPerson(mockProvider)
+	selectedPerson, err := FetchRandomPerson(mockProvider)
 
 	// Assert
 	if err == nil {
@@ -97,7 +97,7 @@ func TestSelectRandomPerson_EveryoneIsVoided(t *testing.T) {
 	}
 
 	// Act
-	selectedPerson, err := SelectRandomPerson(mockProvider)
+	selectedPerson, err := FetchRandomPerson(mockProvider)
 
 	// Assert
 	if err == nil {

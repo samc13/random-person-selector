@@ -15,7 +15,7 @@ func (f FileBasedPeopleProvider) GetPeople() (core.People, error) {
 func main() {
 	// Initialize the people provider
 	provider := FileBasedPeopleProvider{}
-	selectedPerson, err := core.SelectRandomPerson(provider)
+	selectedPerson, err := core.FetchRandomPerson(provider)
 
 	if err != nil {
 		log.Fatalf("Error selecting random person: %v", err)
