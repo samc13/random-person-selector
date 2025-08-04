@@ -60,6 +60,14 @@ gofmt -w main.go
 
 to format a file. The `-w` flag will write to the source file, otherwise it goes to STDOUT. 
 
+You can also run: 
+
+```bash
+gofmt -s -w .
+```
+
+to recursively format the whole repo, if ran from the source root. 
+
 ## Testing
 
 To run the tests, you just run: 
