@@ -21,4 +21,10 @@ func main() {
 		log.Fatalf("Error selecting random person: %v", err)
 	}
 	fmt.Printf("Selected person: %s \n", selectedPerson.Name)
+
+	fmt.Printf("Storing selection...\n")
+	if err := core.RecordSelection(selectedPerson, "previous_selections.csv"); err != nil {
+		log.Fatalf("Error storing selection: %v", err)
+	}
+	fmt.Printf("Selection stored successfully.\n")
 }
