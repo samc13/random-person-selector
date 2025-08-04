@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"random-person-selector/core"
+	"random-person-selector/formatting"
 	"random-person-selector/logging"
 )
 
@@ -20,7 +21,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error selecting random person: %v", err)
 	}
-	logging.Infof("Selected person: %s", selectedPerson.Name)
+	logging.Infof("Selected person: %s", formatting.FormatName(selectedPerson.Name))
 
 	logging.Debug("Storing selection...")
 	if err := core.RecordSelection(selectedPerson, "previous_selections.csv"); err != nil {
