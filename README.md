@@ -27,6 +27,10 @@ go run .
 
 This relies the `go.mod` file to infer the entry point and what to run. 
 
+Here's an example of it in action:
+
+![](example.gif)
+
 ## Formatting
 
 Go is quite nice for formatting. 
