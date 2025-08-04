@@ -17,6 +17,23 @@ and you can then check the success of this with:
 go version
 ```
 
+## Setup
+
+Before running, you will need to place a `.csv` file into the `/env` directory. 
+
+Otherwise, you may get the error: 
+
+```
+open env/names.csv: no such file or directory
+```
+
+You can run this, from the route directory, to populate the `/env` directory
+```bash
+cp namestemplate.csv env/names.csv
+```
+
+This will need to follow the template provided in [namestemplate.csv](namestemplate.csv).
+
 ## Running
 
 To run a go script, you can run: 

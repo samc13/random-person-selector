@@ -27,7 +27,7 @@ type People struct {
 }
 
 func GetPeople() (People, error) {
-	filePath := "names.csv"
+	filePath := "env/names.csv"
 	return constructPeople(filePath)
 }
 
