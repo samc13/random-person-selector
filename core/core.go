@@ -20,9 +20,16 @@ func FetchRandomPerson(provider PeopleProvider) (Person, error) {
 		log.Fatalf("Error filtering voided persons: %v", err)
 	}
 
-	// TODO: Filter down to those that have been selected the least (need to incorporate previousslections.csv)
+	peopleSelectedThisYear, err := GetSelectedIDsThisYear("previous_selections.csv", time.Now().Year())
+	if err != nil {
+		log.Fatalf("Error getting selected IDs this year: %v", err)
+	}
+	filteredPeople, err := excludeSelectedPeople(peopleToUse, peopleSelectedThisYear)
+	if err != nil {
+		log.Fatalf("Error excluding selected people: %v", err)
+	}
 
-	sample, err := buildWeightedPool(peopleToUse)
+	sample, err := buildWeightedPool(filteredPeople)
 	if err != nil {
 		log.Fatalf("Error ordering people: %v", err)
 	}
@@ -40,6 +47,16 @@ func filterOutVoided(people []Person) ([]Person, error) {
 		}
 	}
 	return output, nil
+}
+
+func excludeSelectedPeople(people []Person, excluded map[int]struct{}) ([]Person, error) {
+	var result []Person
+	for _, p := range people {
+		if _, found := excluded[p.ID]; !found {
+			result = append(result, p)
+		}
+	}
+	return result, nil
 }
 
 // Returns a weighted pool of people based on years present
