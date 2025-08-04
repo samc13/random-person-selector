@@ -2,7 +2,7 @@ package core
 
 import (
 	"log"
-	"sort"
+	"time"
 )
 
 type PeopleProvider interface {
@@ -22,15 +22,9 @@ func FetchRandomPerson(provider PeopleProvider) (Person, error) {
 
 	// TODO: Filter down to those that have been selected the least (need to incorporate previousslections.csv)
 
-	sortPeopleToUse, err := orderByOldestFirst(peopleToUse)
+	sample, err := buildWeightedPool(peopleToUse)
 	if err != nil {
 		log.Fatalf("Error ordering people: %v", err)
-	}
-
-	// Take the top maxSampleSize, or all if less than maxSampleSize
-	sample, err := takeAtMostTen(sortPeopleToUse)
-	if err != nil {
-		log.Fatalf("Error taking sample: %v", err)
 	}
 
 	result, err := SelectRandomPerson(sample)
@@ -48,19 +42,16 @@ func filterOutVoided(people []Person) ([]Person, error) {
 	return output, nil
 }
 
-func orderByOldestFirst(people []Person) ([]Person, error) {
-	copyOfPeople := make([]Person, len(people))
-	copy(copyOfPeople, people)
-	sort.Slice(copyOfPeople, func(i, j int) bool {
-		return copyOfPeople[i].AddedOn.Before(copyOfPeople[j].AddedOn)
-	})
-	return copyOfPeople, nil
-}
-
-func takeAtMostTen(people []Person) ([]Person, error) {
-	maxSampleSize := 10
-	if len(people) > maxSampleSize {
-		people = people[:maxSampleSize]
+// Returns a weighted pool of people based on years present
+func buildWeightedPool(people []Person) ([]Person, error) {
+	now := time.Now()
+	var pool []Person
+	for _, p := range people {
+		years := int(now.Sub(p.AddedOn).Hours()/(24*365)) + 1 // at least 1
+		// Create as many entries as years of service
+		for i := 0; i < years; i++ {
+			pool = append(pool, p)
+		}
 	}
-	return people, nil
+	return pool, nil
 }
