@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"random-person-selector/core"
+	"random-person-selector/logging"
 )
 
 type FileBasedPeopleProvider struct{}
@@ -20,11 +20,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error selecting random person: %v", err)
 	}
-	fmt.Printf("Selected person: %s \n", selectedPerson.Name)
+	logging.Infof("Selected person: %s", selectedPerson.Name)
 
-	fmt.Printf("Storing selection...\n")
+	logging.Debug("Storing selection...")
 	if err := core.RecordSelection(selectedPerson, "previous_selections.csv"); err != nil {
 		log.Fatalf("Error storing selection: %v", err)
 	}
-	fmt.Printf("Selection stored successfully.\n")
+	logging.Debug("Selection stored successfully.")
 }
