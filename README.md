@@ -29,7 +29,7 @@ open env/names.csv: no such file or directory
 
 You can run this, from the route directory, to populate the `/env` directory
 ```bash
-cp namestemplate.csv env/names.csv
+mkdir -p env && cp namestemplate.csv env/names.csv
 ```
 
 This will need to follow the template provided in [namestemplate.csv](namestemplate.csv).
